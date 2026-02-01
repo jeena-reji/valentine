@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Valentine 💘</title>
+
 <style>
 body {
   margin: 0;
@@ -13,18 +14,6 @@ body {
   align-items: center;
   font-family: Arial, sans-serif;
   overflow: hidden;
-}
-
-/* Floating hearts */
-.heart {
-  position: absolute;
-  color: pink;
-  animation: float 6s linear infinite;
-}
-
-@keyframes float {
-  0% { bottom: -10px; opacity: 1; }
-  100% { bottom: 110%; opacity: 0; }
 }
 
 .card {
@@ -41,10 +30,6 @@ body {
   font-size: 60px;
 }
 
-h2 {
-  margin: 15px 0 25px;
-}
-
 .buttons {
   display: flex;
   justify-content: center;
@@ -58,18 +43,15 @@ button {
   border: none;
   font-size: 16px;
   cursor: pointer;
-  transition: transform 0.2s;
 }
 
 .yes {
   background: #ff4f8b;
   color: white;
-  z-index: 1;
 }
 
 .no {
   background: #e0e0e0;
-  z-index: 2;
   position: relative;
 }
 
@@ -79,60 +61,97 @@ button {
   color: #666;
 }
 
-#result {
-  margin-top: 20px;
-  font-size: 16px;
-  color: #ff4f8b;
+/* Fake pages */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  animation: float 6s linear infinite;
+}
+
+@keyframes float {
+  0% { bottom: -10px; opacity: 1; }
+  100% { bottom: 110%; opacity: 0; }
 }
 </style>
 </head>
+
 <body>
 
-<div class="card" id="card">
-  <div class="emoji">🐱💗</div>
-  <h2>Alan, will you be my Valentine?</h2>
+<div class="card">
 
-  <div class="buttons" id="btnContainer">
-    <button class="yes" id="yesBtn">Yes</button>
-    <button class="no" id="noBtn">No</button>
+  <!-- PAGE 1 -->
+  <div class="page active" id="page-question">
+    <div class="emoji">🐱💗</div>
+    <h2>Alan, will you be my Valentine?</h2>
+
+    <div class="buttons" id="btnContainer">
+      <button class="yes" id="yesBtn">Yes</button>
+      <button class="no" id="noBtn">No</button>
+    </div>
+
+    <div class="note">"No" seems a bit shy 😈</div>
   </div>
 
-  <div class="note">"No" seems a bit shy 😈</div>
+  <!-- PAGE 2 - YES -->
+  <div class="page" id="page-yes">
+    <div class="emoji">🎉💖</div>
+    <h2>YAYYYY!</h2>
+    <p>You got the best girl as your Valentine 😌💘</p>
+  </div>
 
-  <div id="result"></div>
+  <!-- PAGE 3 - NO -->
+  <!-- PAGE 3 - NO -->
+<div class="page" id="page-no">
+  <div class="emoji">😈💕</div>
+  <h2>No, baby 😏</h2>
+  <p>You can’t say no.</p>
+  <p>You’re trapped with me 💖</p>
+  <button onclick="goBack()">Try Again 😌</button>
+</div>
+
+
 </div>
 
 <script>
-/* YES button */
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
+}
+
+/* YES */
 document.getElementById("yesBtn").addEventListener("click", () => {
-  document.getElementById("result").innerHTML =
-    "🎉 You got the best girl as your Valentine 💖";
+  showPage("page-yes");
 });
 
-/* NO button runs away but stays clickable */
+/* NO button runs away */
 const noBtn = document.getElementById("noBtn");
-const btnContainer = document.getElementById("btnContainer");
+const container = document.getElementById("btnContainer");
 
 noBtn.addEventListener("mouseover", () => {
-  const containerRect = btnContainer.getBoundingClientRect();
-  const btnRect = noBtn.getBoundingClientRect();
-
-  const maxX = containerRect.width - btnRect.width;
-  const maxY = containerRect.height - btnRect.height;
-
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
+  const x = Math.random() * (container.offsetWidth - noBtn.offsetWidth);
+  const y = Math.random() * (container.offsetHeight - noBtn.offsetHeight);
 
   noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 });
 
-/* NO click message */
+/* NO click */
 noBtn.addEventListener("click", () => {
-  document.getElementById("result").innerHTML =
-    "😜 Another one? Nope! You're trapped baby 💕";
+  showPage("page-no");
 });
+
+function goBack() {
+  showPage("page-question");
+}
 
 /* Floating hearts */
 setInterval(() => {
@@ -142,7 +161,6 @@ setInterval(() => {
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.fontSize = Math.random() * 20 + 10 + "px";
   document.body.appendChild(heart);
-
   setTimeout(() => heart.remove(), 6000);
 }, 500);
 </script>
