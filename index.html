@@ -135,13 +135,22 @@ document.getElementById("yesBtn").addEventListener("click", () => {
 const noBtn = document.getElementById("noBtn");
 const container = document.getElementById("btnContainer");
 
+let noClicked = false;
+
 noBtn.addEventListener("mouseover", () => {
+  if (noClicked) return;
+
   const x = Math.random() * (container.offsetWidth - noBtn.offsetWidth);
   const y = Math.random() * (container.offsetHeight - noBtn.offsetHeight);
 
   noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
+});
+
+noBtn.addEventListener("click", () => {
+  noClicked = true;
+  showPage("page-no");
 });
 
 /* NO click */
