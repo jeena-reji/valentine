@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Valentine 💘</title>
-
 <style>
 body {
   margin: 0;
@@ -59,16 +58,19 @@ button {
   border: none;
   font-size: 16px;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .yes {
   background: #ff4f8b;
   color: white;
+  z-index: 1;
 }
 
 .no {
   background: #e0e0e0;
-  position: absolute;
+  z-index: 2;
+  position: relative;
 }
 
 .note {
@@ -84,14 +86,13 @@ button {
 }
 </style>
 </head>
-
 <body>
 
 <div class="card" id="card">
   <div class="emoji">🐱💗</div>
   <h2>Alan, will you be my Valentine?</h2>
 
-  <div class="buttons">
+  <div class="buttons" id="btnContainer">
     <button class="yes" id="yesBtn">Yes</button>
     <button class="no" id="noBtn">No</button>
   </div>
@@ -108,13 +109,23 @@ document.getElementById("yesBtn").addEventListener("click", () => {
     "🎉 You got the best girl as your Valentine 💖";
 });
 
-/* NO button runs away */
+/* NO button runs away but stays clickable */
 const noBtn = document.getElementById("noBtn");
+const btnContainer = document.getElementById("btnContainer");
 
 noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * 300 - 150;
-  const y = Math.random() * 120 - 60;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  const containerRect = btnContainer.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+
+  const maxX = containerRect.width - btnRect.width;
+  const maxY = containerRect.height - btnRect.height;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
 });
 
 /* NO click message */
