@@ -20,8 +20,7 @@ body {
 .heart {
   position: absolute;
   color: pink;
-  font-size: 20px;
-  animation: float 6s infinite;
+  animation: float 6s linear infinite;
 }
 
 @keyframes float {
@@ -77,78 +76,54 @@ button {
   font-size: 12px;
   color: #666;
 }
+
+#result {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #ff4f8b;
+}
 </style>
 </head>
-
-<script>
-  const noBtn = document.getElementById("noBtn");
-  const yesBtn = document.getElementById("yesBtn");
-
-  // YES click
-  yesBtn.addEventListener("click", () => {
-    document.body.innerHTML = `
-      <div style="
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
-        background:#ffd6e8;
-        font-family:sans-serif;
-        text-align:center;">
-        <h1>🎉 Congratulations!<br>You got the best girl ❤️</h1>
-      </div>
-    `;
-  });
-
-  // NO hover = move away
-  noBtn.addEventListener("mouseover", () => {
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-    noBtn.style.position = "absolute";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-  });
-
-  // NO click (just in case 😈)
-  noBtn.addEventListener("click", () => {
-    alert("Haha 😜 you're trapped baby 💖");
-  });
-</script>
-
 
 <body>
 
 <div class="card" id="card">
   <div class="emoji">🐱💗</div>
-  <h2>baby, will you be my Valentine?</h2>
+  <h2>Alan, will you be my Valentine?</h2>
 
   <div class="buttons">
-    <button class="yes" onclick="yesClick()">Yes</button>
+    <button class="yes" id="yesBtn">Yes</button>
     <button class="no" id="noBtn">No</button>
   </div>
 
   <div class="note">"No" seems a bit shy 😈</div>
+
+  <div id="result"></div>
 </div>
 
 <script>
-// YES click
-function yesClick() {
-  document.getElementById("card").innerHTML = `
-    <div class="emoji">🎉💖</div>
-    <h2>Congratulations baby</h2>
-    <p>You got the best girl as your Valentine 💕</p>
-  `;
-}
+/* YES button */
+document.getElementById("yesBtn").addEventListener("click", () => {
+  document.getElementById("result").innerHTML =
+    "🎉 You got the best girl as your Valentine 💖";
+});
 
-// NO button runs away
+/* NO button runs away */
 const noBtn = document.getElementById("noBtn");
+
 noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * 200 - 100;
-  const y = Math.random() * 80 - 40;
+  const x = Math.random() * 300 - 150;
+  const y = Math.random() * 120 - 60;
   noBtn.style.transform = `translate(${x}px, ${y}px)`;
 });
 
-// Floating hearts
+/* NO click message */
+noBtn.addEventListener("click", () => {
+  document.getElementById("result").innerHTML =
+    "😜 Another one? Nope! You're trapped baby 💕";
+});
+
+/* Floating hearts */
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
